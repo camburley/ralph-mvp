@@ -21,8 +21,7 @@ export function validate(cfg: unknown): ValidationResult {
   // port
   if (typeof c.port !== "number" || !Number.isInteger(c.port)) {
     errors.push("port must be an integer");
-  } else if (c.port < 0 || c.port > 65535) {
-    // BUG #1: lower bound should be 1, not 0. Port 0 is reserved.
+  } else if (c.port < 1 || c.port > 65535) {
     errors.push("port must be within range");
   }
 
@@ -36,7 +35,14 @@ export function validate(cfg: unknown): ValidationResult {
         break;
       }
     }
-    // BUG #2: no duplicate-tag check. Spec says tags must be unique.
+    const seen = new Set<string>();
+    for (const t of c.tags) {
+      if (seen.has(t)) {
+        errors.push("tags must be unique");
+        break;
+      }
+      seen.add(t);
+    }
   }
 
   // featureFlags
