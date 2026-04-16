@@ -108,3 +108,7 @@ See [`OPEN_QUESTIONS.md`](./OPEN_QUESTIONS.md) — 6 discovery questions I'd wan
 ## License
 
 MIT. Fork it, rename it, ship it.
+
+---
+
+Built by [Cam Burley](https://burley.ai) · [burley.ai](https://burley.ai) — agent-native software for founders and teams. Live demo: [ralph-mvp.vercel.app](https://ralph-mvp.vercel.app).
