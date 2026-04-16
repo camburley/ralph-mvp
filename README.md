@@ -50,6 +50,23 @@ The demo ships a broken vitest (`add(a,b) => a + b - 1`). The agent:
 
 All on its own, in the terminal, with real MCP context and real shell observation.
 
+## demo2 — harder scenario
+
+`demo/` is a one-shot fix (single bug, 2-3 iterations). `demo2/` is the
+multi-file, multi-iteration version: a tiny TypeScript config validator with
+two planted bugs that are **not** revealed by the test failure messages. The
+agent has to read the test file, the validator, and the type definitions to
+deduce what "valid" actually means, then fix it — typically across 5-8
+iterations.
+
+```bash
+cd demo2 && npm install && cd ..
+npx tsx src/index.ts run demo2/goal.md --cwd demo2
+```
+
+Expected baseline before the agent runs: `cd demo2 && npm test` → **2 pass,
+2 fail**. Success: all 4 green and a `fix: validator edge cases` commit.
+
 ## File map (matches the brief 1-for-1)
 
 | Brief requirement                  | File(s)                     |
