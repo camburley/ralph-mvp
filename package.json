@@ -1,0 +1,47 @@
+{
+  "name": "ralph-mvp",
+  "version": "0.1.0",
+  "description": "Terminal-based agentic coding loop in ~150 LOC — Context → Plan → Execute → Observe → Self-correct. MCP-native, Claude-powered, swappable brain.",
+  "license": "MIT",
+  "type": "module",
+  "bin": {
+    "ralph-mvp": "./dist/index.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsx src/index.ts",
+    "start": "node dist/index.js",
+    "demo": "tsx src/index.ts run demo/goal.md --cwd demo",
+    "prepublishOnly": "npm run build"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.4",
+    "@modelcontextprotocol/server-filesystem": "^2025.1.14",
+    "commander": "^12.1.0",
+    "execa": "^9.5.2",
+    "globby": "^14.0.2",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.2",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "keywords": [
+    "agent",
+    "ralph",
+    "mcp",
+    "claude",
+    "coding-agent",
+    "cli",
+    "autonomous"
+  ],
+  "author": "camburley",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/camburley/ralph-mvp.git"
+  }
+}

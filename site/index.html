@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>ralph-mvp — agentic coding loop in ~550 LOC</title>
+<meta name="description" content="Terminal-based agentic coding loop. Context → Plan → Execute → Observe → Self-correct. MCP-native. Claude-powered. MIT." />
+<meta property="og:title" content="ralph-mvp — agentic coding loop in 150 LOC" />
+<meta property="og:description" content="Terminal-based autonomous coding agent. Real MCP. Real terminal feedback. No chat UI." />
+<style>
+  :root {
+    --bg: #0b0d10;
+    --panel: #12151a;
+    --ink: #e6edf3;
+    --mute: #8b949e;
+    --accent: #7ee787;
+    --link: #79c0ff;
+    --border: #232932;
+    --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--mono);
+    font-size: 15px;
+    line-height: 1.55;
+  }
+  main { max-width: 820px; margin: 0 auto; padding: 48px 24px 96px; }
+  h1 { font-size: 32px; margin: 0 0 8px; letter-spacing: -0.02em; }
+  h2 { font-size: 20px; margin: 40px 0 12px; color: var(--accent); }
+  p { margin: 0 0 14px; color: var(--ink); }
+  .sub { color: var(--mute); margin-bottom: 24px; }
+  a { color: var(--link); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  code { background: var(--panel); padding: 2px 6px; border-radius: 4px; color: var(--ink); }
+  pre {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px 18px;
+    overflow-x: auto;
+    font-size: 13.5px;
+    line-height: 1.5;
+  }
+  pre code { background: transparent; padding: 0; }
+  .pill {
+    display: inline-block;
+    padding: 3px 10px;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    color: var(--mute);
+    font-size: 12px;
+    margin-right: 6px;
+  }
+  .hero {
+    background: linear-gradient(135deg, rgba(126,231,135,0.08), rgba(121,192,255,0.04));
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 28px 28px 24px;
+    margin-bottom: 32px;
+  }
+  .loop {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 18px 20px;
+    color: var(--mute);
+    font-size: 13px;
+    white-space: pre;
+    overflow-x: auto;
+  }
+  ol li { margin-bottom: 8px; }
+  footer { margin-top: 48px; color: var(--mute); font-size: 13px; border-top: 1px solid var(--border); padding-top: 20px; }
+  .loom { aspect-ratio: 16 / 9; width: 100%; background: var(--panel); border: 1px solid var(--border); border-radius: 8px; display:flex; align-items:center; justify-content:center; color: var(--mute); }
+</style>
+</head>
+<body>
+<main>
+  <section class="hero">
+    <span class="pill">open source</span>
+    <span class="pill">MIT</span>
+    <span class="pill">TypeScript · Node</span>
+    <span class="pill">MCP-native</span>
+    <h1>ralph-mvp</h1>
+    <p class="sub">Terminal-based agentic coding loop. ~550 LOC total, ~150 in the loop core. No chat UI. No humans in the middle. The agent plans, executes, observes, and self-corrects against real terminal feedback — in a strict loop — until the goal is done.</p>
+    <p>
+      <a href="https://github.com/camburley/ralph-mvp">→ github.com/camburley/ralph-mvp</a>
+    </p>
+  </section>
+
+  <h2>Install &amp; run the demo</h2>
+<pre><code>git clone https://github.com/camburley/ralph-mvp
+cd ralph-mvp
+npm install
+cd demo &amp;&amp; npm install &amp;&amp; cd ..
+npx tsx src/index.ts run demo/goal.md --cwd demo</code></pre>
+  <p>Ships a broken vitest. Agent fixes it autonomously and commits — while you watch.</p>
+
+  <h2>The loop</h2>
+<pre class="loop">1. Context Loading  ←  MCP filesystem server (real MCP)
+2. Plan             ←  claude -p (swappable brain)
+3. Execute          ←  allowlisted shell / write_file
+4. Observe          ←  stdout / stderr / exitCode captured
+5. Self-correct     ←  observation folds into next prompt
+        │
+        └──→ loop until done=true</pre>
+
+  <h2>Demo video</h2>
+  <div class="loom">(Loom embed placeholder — recording pending)</div>
+  <p style="margin-top:10px;color:var(--mute);font-size:13px;">2-minute silent screen capture: git clone → npm install → npx ralph-mvp run demo/goal.md → red → green → commit.</p>
+
+  <h2>Why it matches the brief</h2>
+  <ol>
+    <li><strong>Terminal-based</strong>, not a chat UI — `commander` CLI, streaming terminal output.</li>
+    <li><strong>Ralph-style autonomous loop</strong> — 5 explicit phases, strict state machine in `loop.ts`.</li>
+    <li><strong>Real MCP integration</strong> — spawns `@modelcontextprotocol/server-filesystem` over stdio, uses the MCP SDK client.</li>
+    <li><strong>Self-correction on terminal output</strong> — every observation (stdout/stderr/exitCode) feeds back into the next prompt.</li>
+    <li><strong>Swappable brain</strong> — `brain.ts` is ~40 LOC around `claude -p`; swap to any function-calling LLM.</li>
+    <li><strong>Resumable</strong> — `.ralph/state.json` ledger, `ralph resume` picks up mid-run.</li>
+  </ol>
+
+  <h2>Open questions for the client</h2>
+  <ol>
+    <li>Target codebase / domain?</li>
+    <li>LLM provider — Claude-only or multi?</li>
+    <li>MCP servers needed beyond filesystem (git, HTTP, shell, custom)?</li>
+    <li>Success metric — % of tasks landed green without human edits?</li>
+    <li>Sandbox boundary — full shell or allowlisted commands?</li>
+    <li>OSS license / repo ownership?</li>
+  </ol>
+
+  <footer>
+    built against the Upwork brief · MIT · <a href="https://github.com/camburley/ralph-mvp">source</a>
+  </footer>
+</main>
+</body>
+</html>
